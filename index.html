@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zee | Personal Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --neon-glow: #00ffee;
+            --dark-primary: #0a0a0a;
+            --dark-secondary: #1c1c1c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark-primary), var(--dark-secondary));
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none; /* Hide default cursor */
+        }
+
+        /* --- Glowing Cursor Trail --- */
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: var(--neon-glow);
+            border-radius: 50%;
+            pointer-events: none;
+            left: 0;
+            top: 0;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            opacity: 0.8;
+            box-shadow: 0 0 10px var(--neon-glow), 0 0 20px var(--neon-glow), 0 0 30px var(--neon-glow);
+            transition: transform 0.1s ease-out, opacity 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out;
+        }
+        
+        body:hover > .cursor-trail {
+            opacity: 1;
+        }
+
+        a:hover ~ .cursor-trail,
+        button:hover ~ .cursor-trail,
+        .card:hover ~ .cursor-trail {
+            transform: translate(-50%, -50%) scale(1.5);
+            opacity: 0.5;
+        }
+
+        /* --- General Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* --- Header & Typewriter Card --- */
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 50vh;
+            padding: 4rem 0;
+        }
+
+        .typewriter-card {
+            background-color: var(--dark-secondary);
+            padding: 2.5rem 3rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 238, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 238, 0.1), 0 0 30px rgba(0, 255, 238, 0.05);
+            text-align: center;
+            max-width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        .typewriter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--neon-glow), 0 0 40px rgba(0, 255, 238, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #fff; /* Changed to plain white */
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--text-primary);
+        }
+
+        /* Typewriter caret */
+        .typewriter-text {
+            border-right: 0.15em solid var(--text-primary); /* Caret color changed */
+            white-space: nowrap;
+            overflow: hidden;
+            margin: 0 auto;
+            animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--text-primary); }
+        }
+
+        /* --- Social Section --- */
+        .social-connect {
+            padding: 2rem 0 4rem 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #fff;
+            text-shadow: 0 0 8px var(--neon-glow);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Card Flip Animation */
+        .card {
+            background-color: transparent;
+            width: 100%;
+            height: 200px;
+            perspective: 1000px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 238, 0.2);
+        }
+        
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+            box-shadow: 0 0 15px var(--neon-glow), 0 0 25px var(--neon-glow);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            background-color: var(--dark-secondary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-front i {
+            font-size: 4rem;
+            color: var(--neon-glow);
+            text-shadow: 0 0 10px var(--neon-glow);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            padding: 1rem;
+        }
+
+        .card-back p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .visit-btn {
+            padding: 10px 25px;
+            border: 1px solid var(--neon-glow);
+            background-color: transparent;
+            color: var(--neon-glow);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .visit-btn:hover {
+            background-color: var(--neon-glow);
+            color: var(--dark-primary);
+            box-shadow: 0 0 10px var(--neon-glow);
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(0, 255, 238, 0.1);
+            margin-top: 4rem;
+        }
+
+        .site-footer p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-bmac-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: #FFDD00;
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #FFDD00, 0 0 20px rgba(255, 221, 0, 0.5);
+        }
+        
+        .footer-bmac-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px #FFDD00, 0 0 30px rgba(255, 221, 0, 0.7);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+             .hero h1 {
+                font-size: 1.8rem; /* Adjusted for smaller screens */
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .typewriter-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-trail"></div>
+
+    <header class="hero">
+        <div class="typewriter-card">
+            <h1 class="typewriter-text">Jihadul Islam (Zee)</h1>
+            <p>Developer & Creative Mind</p>
+        </div>
+    </header>
+
+    <main>
+        <section id="connect" class="social-connect">
+            <div class="container">
+                <h2 class="section-title">Stay Connected with Zee</h2>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <i class="fa-brands fa-x-twitter"></i>
+                            </div>
+                            <div class="card-back">
+                                <p>Follow me instantly on X</p>
+                                <a href="https://x.com/intent/follow?screen_name=zeexvoo" target="_blank" class="visit-btn">Visit</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <i class="fa-brands fa-telegram"></i>
+                            </div>
+                            <div class="card-back">
+                                <p>Join my Telegram group</p>
+                                <a href="https://t.me/xeexvoo" target="_blank" class="visit-btn">Visit</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </div>
+                            <div class="card-back">
+                                <p>Connect with me on Facebook</p>
+                                <a href="https://facebook.com/zeexvoo" target="_blank" class="visit-btn">Visit</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <div class="card-back">
+                                <p>Explore my code and projects</p>
+                                <a href="https://github.com/zeeveex" target="_blank" class="visit-btn">Visit</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <i class="fa-brands fa-discord"></i>
+                            </div>
+                            <div class="card-back">
+                                <p>Join my creative community</p>
+                                <a href="https://discord.com/invite/1396315437834174565" target="_blank" class="visit-btn">Visit</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <i class="fa-solid fa-mug-hot"></i>
+                            </div>
+                            <div class="card-back">
+                                <p>Support my journey</p>
+                                <a href="https://www.buymeacoffee.com/zeecreator" target="_blank" class="visit-btn">Visit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 | Made by Jihadul Islam (Zee)</p>
+            <a href="https://www.buymeacoffee.com/zeecreator" target="_blank" class="footer-bmac-btn">
+                <i class="fa-solid fa-mug-hot"></i> Buy Me A Coffee
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Glowing Cursor Trail Script ---
+        const cursorTrail = document.querySelector('.cursor-trail');
+        document.addEventListener('mousemove', e => {
+            cursorTrail.style.left = e.clientX + 'px';
+            cursorTrail.style.top = e.clientY + 'px';
+        });
+
+        // --- Typewriter Animation Reset on visibility change for re-animation ---
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) {
+                const typewriter = document.querySelector('.typewriter-text');
+                if (typewriter) {
+                    typewriter.classList.remove('typewriter-text');
+                    void typewriter.offsetWidth;
+                    typewriter.classList.add('typewriter-text');
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
